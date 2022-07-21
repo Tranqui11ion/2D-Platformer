@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Climbing
+  - Player
+  - Background
+  - Boucing
+  - Enemies
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3574368301
+    locked: 0
+  - name: RulePlatforms
+    uniqueID: 4260024165
+    locked: 0
+  - name: OverridePlatforms
+    uniqueID: 4167613587
+    locked: 0
+  - name: Props
+    uniqueID: 864781379
+    locked: 0
+  - name: Player
+    uniqueID: 4284310149
+    locked: 0
