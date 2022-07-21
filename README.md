@@ -1,2 +1,2 @@
 # 2D-Platformer
-In dev 2d Unity game
+In dev 2d Unity game.
