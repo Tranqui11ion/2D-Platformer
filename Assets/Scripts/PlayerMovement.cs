@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -37,18 +38,22 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] PhysicsMaterial2D withFriction;
     [SerializeField] PhysicsMaterial2D noFriction;
 
+    private CinemachineImpulseSource _myImpulseSource;
     
-    
-    void Start()
+    void Awake() 
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myBodyCollider = GetComponent<CapsuleCollider2D>();
         myFeetCollider = GetComponent<BoxCollider2D>();
-        gravityScaleAtStart = myRigidbody.gravityScale;
-        runSpeedAtStart = runSpeed;
-    
         whatIsGround = LayerMask.GetMask("Ground");
+        _myImpulseSource = GetComponent<CinemachineImpulseSource>();
+    }
+
+    void Start()
+    {
+        gravityScaleAtStart = myRigidbody.gravityScale;
+        runSpeedAtStart = runSpeed;    
     }
 
     // public CapsuleCollider2D GetPlayerCollider()
@@ -63,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         Run();
         SetJumpOrFall();
         ClimbLadder();
-        Die();
+        
     }
 
     void OnMove(InputValue value)
@@ -186,12 +191,17 @@ public class PlayerMovement : MonoBehaviour
         }    
     }
 
-    void Die()
+    public void Die()
     {
         if(myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
         {
             isAlive = false;
             myAnimator.SetTrigger("Dying");
+            myAnimator.SetBool("isAlive", false);
+            myRigidbody.bodyType = RigidbodyType2D.Static;
+            myBodyCollider.enabled = false;
+            myFeetCollider.enabled = false;
+            _myImpulseSource.GenerateImpulse(1);
         }
     }
 
