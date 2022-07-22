@@ -14,6 +14,8 @@ public class SkeletonMovement : MonoBehaviour
     [SerializeField] public bool IsFacingRight = true;
     [SerializeField] float moveSpeed = 1f;
     float startingMoveSpeed = 1f;
+
+    
     
     Rigidbody2D myRigidbody;
     BoxCollider2D myBoxCollider;
@@ -27,12 +29,17 @@ public class SkeletonMovement : MonoBehaviour
     [SerializeField] float attackTimer = 1.4f;
     [SerializeField] float attackDelayTimer = 0;
 
+    
+
+
     // float animTransistionDelay = 2.5f;
     // float baseAnimTransistionDelay = 2.5f;
 
     void Awake() 
     {
+        player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerMovement>();
+        
     }
     
     void Start()
@@ -52,6 +59,7 @@ public class SkeletonMovement : MonoBehaviour
         if (!isAlive) { return; }
         AttackPlayer();
         Move();
+        
         
         //Die(); Disabled for Testing
     }
@@ -73,36 +81,42 @@ public class SkeletonMovement : MonoBehaviour
                 CheckDirectionToFace(myRigidbody.velocity.x > 0);
             }    
             
-        }   
-        
-         
+        }     
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        // if (attackRangeCollider.IsTouchingLayers(LayerMask.GetMask("Player")))
-        // {
-        //     Collider2D collider = collision.GetComponent<Collider>();
     
-        //     if(other.tag == "Player")
-        //     { 
-        //         Vector3 contactPoint = collision.contacts[0].point;
-        //         Vector3 center = collider.bounds.center;
-    
-        //         attackRight = contactPoint.x > center.x; 
-        //         if(attackRight != IsFacingRight)
-        //         {
-        //             moveSpeed = -moveSpeed;
-        //             return;
-        //         }
-
-        //     }
-        // }    
-        if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+    void OnTriggerExit2D(Collider2D other) 
+    {
+        if (!myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
         {
             moveSpeed = -moveSpeed;
-            return;
-        }       
+        }
     }
+    // void OnTriggerEnter2D(Collider2D other) {
+    //     // if (attackRangeCollider.IsTouchingLayers(LayerMask.GetMask("Player")))
+    //     // {
+    //     //     Collider2D collider = collision.GetComponent<Collider>();
+    
+    //     //     if(other.tag == "Player")
+    //     //     { 
+    //     //         Vector3 contactPoint = collision.contacts[0].point;
+    //     //         Vector3 center = collider.bounds.center;
+    
+    //     //         attackRight = contactPoint.x > center.x; 
+    //     //         if(attackRight != IsFacingRight)
+    //     //         {
+    //     //             moveSpeed = -moveSpeed;
+    //     //             return;
+    //     //         }
+
+    //     //     }
+    //     // }    
+    //     if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+    //     {
+    //         moveSpeed = -moveSpeed;
+    //         return;
+    //     }       
+    // }
 
     // void OnTriggerExit2D(Collider2D other) {
     //     if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Player"))) 
@@ -138,7 +152,7 @@ public class SkeletonMovement : MonoBehaviour
                     attackTimer = baseAttackTimer;
                     isAttacking = false;
                     myAnimator.SetBool("isAttacking1", false);
-                    playerController.Die();
+                    playerController.CheckIfHit();
                     
                 }
                 
