@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SkeletonMovement : MonoBehaviour
 {
-
+    [SerializeField] bool justKilled = false;
     [SerializeField] bool isAlive = true;
     [SerializeField] bool isAttacking = false;
     [SerializeField] bool isRunning = false;
@@ -16,7 +16,7 @@ public class SkeletonMovement : MonoBehaviour
     float startingMoveSpeed = 1f;
 
     
-    
+    SpriteRenderer mySpriteRenderer;
     Rigidbody2D myRigidbody;
     BoxCollider2D myBoxCollider;
     CircleCollider2D attackRangeCollider;
@@ -37,6 +37,7 @@ public class SkeletonMovement : MonoBehaviour
 
     void Awake() 
     {
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerMovement>();
         
@@ -57,11 +58,14 @@ public class SkeletonMovement : MonoBehaviour
     {  
         lastAttack -= Time.deltaTime;
         if (!isAlive) { return; }
+        // if (justKilled)
+        // {
+        //     isAlive = false;
+        //     justKilled = false;
+        //     StartCoroutine(Die());
+        // }
         AttackPlayer();
-        Move();
-        
-        
-        //Die(); Disabled for Testing
+        Move();              
     }
 
 
@@ -92,31 +96,13 @@ public class SkeletonMovement : MonoBehaviour
             moveSpeed = -moveSpeed;
         }
     }
-    // void OnTriggerEnter2D(Collider2D other) {
-    //     // if (attackRangeCollider.IsTouchingLayers(LayerMask.GetMask("Player")))
-    //     // {
-    //     //     Collider2D collider = collision.GetComponent<Collider>();
-    
-    //     //     if(other.tag == "Player")
-    //     //     { 
-    //     //         Vector3 contactPoint = collision.contacts[0].point;
-    //     //         Vector3 center = collider.bounds.center;
-    
-    //     //         attackRight = contactPoint.x > center.x; 
-    //     //         if(attackRight != IsFacingRight)
-    //     //         {
-    //     //             moveSpeed = -moveSpeed;
-    //     //             return;
-    //     //         }
 
-    //     //     }
-    //     // }    
-    //     if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
-    //     {
-    //         moveSpeed = -moveSpeed;
-    //         return;
-    //     }       
-    // }
+    void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "Projectile")
+        {
+            StartCoroutine(Die());    
+        }
+    }
 
     // void OnTriggerExit2D(Collider2D other) {
     //     if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Player"))) 
@@ -190,14 +176,35 @@ public class SkeletonMovement : MonoBehaviour
 			FlipSprite();
 	}
 
-    void Die()
-    {
-        if(myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Player")))
+    public IEnumerator Die()
+    {    
+        if (gameObject != null)
         {
             isAlive = false;
+            myRigidbody.velocity = new Vector2 (0f, 0f);
+            myBoxCollider.enabled = false;
+            attackRangeCollider.enabled = false;
             myAnimator.SetTrigger("Dying");
-        }
+            yield return new WaitForSeconds(3f);
+            StartCoroutine(FadeOut());
+            Destroy(gameObject);
+        }    
+        
     }
 
+    IEnumerator FadeOut()
+     {
+         float alphaVal = mySpriteRenderer.color.a;
+         Color tmp = mySpriteRenderer.color;
+ 
+         while (mySpriteRenderer.color.a < 1)
+         {
+             alphaVal += 0.01f;
+             tmp.a = alphaVal;
+             mySpriteRenderer.color = tmp;
+ 
+             yield return new WaitForSeconds(0.05f); // update interval
+         }
+     }
     
 }

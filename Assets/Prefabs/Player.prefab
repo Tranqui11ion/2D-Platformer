@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5849243720438344774}
   - component: {fileID: 1046956164255082916}
   - component: {fileID: 2126874694}
+  - component: {fileID: 7467645234309611895}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -201,6 +202,9 @@ MonoBehaviour:
     m_Bits: 0
   withFriction: {fileID: 6200000, guid: 11cbee34ec778bcdab9fa6fc4403245b, type: 2}
   noFriction: {fileID: 6200000, guid: 717f666d3d793364797c87ef336ffad2, type: 2}
+  currentController: {fileID: 0}
+  unarmedController: {fileID: 0}
+  bowController: {fileID: 0}
 --- !u!61 &1046956164255082916
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -280,3 +284,15 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: 0.5, z: 0}
+--- !u!114 &7467645234309611895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5935475864612145896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a163e9fa1a3be4b97ece77c96c38fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

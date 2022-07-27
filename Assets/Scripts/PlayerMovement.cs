@@ -7,6 +7,19 @@ using Cinemachine;
 public class PlayerMovement : MonoBehaviour
 {
 
+    public readonly int hashIdle = Animator.StringToHash("isIdling");
+    public readonly int hashAttacking = Animator.StringToHash("isAttacking");
+    public readonly int hashRunning = Animator.StringToHash("isRunning");
+    public readonly int hashJumping = Animator.StringToHash("isJumping");
+    public readonly int hashClimbing = Animator.StringToHash("isClimbing");
+    public readonly int hashFalling = Animator.StringToHash("isFalling");
+    public readonly int hashDying = Animator.StringToHash("Dying");
+    public readonly int hashAlive = Animator.StringToHash("isAlive");
+
+    string bowName = "bow";
+    string swordName = "sword";
+    string unarmedName = "hand";
+
     [SerializeField] bool isAlive = true;
     [SerializeField] public bool IsFacingRight;
     [SerializeField] public bool isJumping;
@@ -40,28 +53,37 @@ public class PlayerMovement : MonoBehaviour
 
     private CinemachineImpulseSource _myImpulseSource;
 
-    [SerializeField] RuntimeAnimatorController currentController;
+    [SerializeField] float lastAttack;
+    BowControls bowControls;
+    SwordControls swordControls;
+    [SerializeField] GameObject arrow;
+    [SerializeField] Transform bow;
+    [SerializeField] string currentWeapon;
+    [SerializeField] public RuntimeAnimatorController currentController;
     [SerializeField] public RuntimeAnimatorController unarmedController;
     [SerializeField] public RuntimeAnimatorController bowController;
     
 
     void Awake()
     {
+        bowControls = GetComponent<BowControls>();
+        swordControls = GetComponent<SwordControls>();
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myBodyCollider = GetComponent<CapsuleCollider2D>();
         myFeetCollider = GetComponent<BoxCollider2D>();
         whatIsGround = LayerMask.GetMask("Ground");
         _myImpulseSource = GetComponent<CinemachineImpulseSource>();
-        currentController = unarmedController;
+        
     }
 
     void Start()
     {
         gravityScaleAtStart = myRigidbody.gravityScale;
         runSpeedAtStart = runSpeed;
+        currentController = unarmedController;
+        currentWeapon = unarmedName; 
     }
-
     // public CapsuleCollider2D GetPlayerCollider()
     // {
     //     return myBodyCollider;
@@ -71,30 +93,65 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isAlive) { return; }
 
-        Run();
-        CheckForHazards();
-        SetJumpOrFall();
-        ClimbLadder();
-
+        if (lastAttack >= 0)
+        {
+            lastAttack -= Time.deltaTime;
+        }
+        else 
+        {
+            myAnimator.SetBool(hashAttacking, false);
+            Run();
+            CheckForHazards();
+            SetJumpOrFall();
+            ClimbLadder();
+        }
     }
 
-    void OnAttack()
+    IEnumerator ArrowDelay()
     {
-        myAnimator.SetBool("isAttacking", true);
+        yield return new WaitForSeconds(.7f);
+        ReleaseArrow();
+    }
+
+    void OnAttack(InputValue value)
+    {
+        if(!isAlive) { return;}
+        if (currentWeapon == bowName)
+        {
+            currentController = bowController;
+            //bowControls.Attack();
+            myAnimator.SetBool(hashAttacking, true);
+            lastAttack = bowControls.bowAttackAnimTime;
+            StartCoroutine(ArrowDelay());
+        }
+        else if( currentWeapon == swordName)
+        {
+            swordControls.Attack();
+        }  
+        else
+        {
+            Debug.Log("No weapon equipped");
+        } 
+        
+    }
+
+    void ReleaseArrow()
+    {
+        Instantiate(arrow, bow.position, transform.rotation);
     }
     void OnSwitchWeapons()
     {
-        Debug.Log("This is good");
-        if (currentController == unarmedController)
+        if (currentWeapon == unarmedName)
         {
-            Debug.Log("This is also good");
+            currentWeapon = bowName;
             currentController = bowController;
-            myAnimator.runtimeAnimatorController = bowController as RuntimeAnimatorController;
+            myAnimator.runtimeAnimatorController = currentController as RuntimeAnimatorController;
         }
         else
         {
+            currentWeapon = unarmedName;
             currentController = unarmedController;
-            myAnimator.runtimeAnimatorController = unarmedController as RuntimeAnimatorController;
+            myAnimator.runtimeAnimatorController = currentController as RuntimeAnimatorController;
         }
 
     }
@@ -151,7 +208,7 @@ public class PlayerMovement : MonoBehaviour
         if (myFeetCollider.IsTouchingLayers(whatIsGround))
         {
             bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
-            myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
+            myAnimator.SetBool(hashRunning, playerHasHorizontalSpeed);
         }
 
 
@@ -179,14 +236,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (!myFeetCollider.IsTouchingLayers(whatIsGround))
         {
-            myAnimator.SetBool("isJumping", verticalSpeed > 0);
-            myAnimator.SetBool("isFalling", verticalSpeed < 0);
+            myAnimator.SetBool(hashJumping, verticalSpeed > 0);
+            myAnimator.SetBool(hashFalling, verticalSpeed < 0);
             runSpeed = runSpeed / 2;
         }
         else
         {
-            myAnimator.SetBool("isJumping", false);
-            myAnimator.SetBool("isFalling", false);
+            myAnimator.SetBool(hashJumping, false);
+            myAnimator.SetBool(hashFalling, false);
             runSpeed = runSpeedAtStart;
         }
 
@@ -198,7 +255,7 @@ public class PlayerMovement : MonoBehaviour
         if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             myRigidbody.gravityScale = gravityScaleAtStart;
-            myAnimator.SetBool("isClimbing", false);
+            myAnimator.SetBool(hashClimbing, false);
             myAnimator.speed = 1;
             runSpeed = runSpeedAtStart;
             return;
@@ -211,7 +268,7 @@ public class PlayerMovement : MonoBehaviour
         {
             myRigidbody.gravityScale = gravityScaleAtStart;
             runSpeed = runSpeedAtStart;
-            myAnimator.SetBool("isClimbing", false);
+            myAnimator.SetBool(hashClimbing, false);
             myAnimator.speed = 1;
             return;
         }
@@ -220,24 +277,24 @@ public class PlayerMovement : MonoBehaviour
             bool playerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon;
             if (playerHasVerticalSpeed)
             {
-                myAnimator.SetBool("isClimbing", true);
+                myAnimator.SetBool(hashClimbing, true);
                 runSpeed = runSpeedAtStart / 4;
                 myAnimator.speed = 1;
             }
             else if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
             {
-                myAnimator.SetBool("isClimbing", true);
+                myAnimator.SetBool(hashClimbing, true);
                 runSpeed = runSpeedAtStart / 4;
                 myAnimator.speed = 0;
             }
         }
     }
 
-    public void Die()
+    void Die()
     {
         isAlive = false;
-        myAnimator.SetTrigger("Dying");
-        myAnimator.SetBool("isAlive", false);
+        myAnimator.SetTrigger(hashDying);
+        myAnimator.SetBool(hashAlive, false);
         myRigidbody.bodyType = RigidbodyType2D.Static;
         myBodyCollider.enabled = false;
         myFeetCollider.enabled = false;

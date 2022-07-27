@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 978181710}
   m_Layer: 11
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,6 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e131e6db6b3bcdf04a775e40bb159767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  justKilled: 0
   isAlive: 1
   isAttacking: 0
   isRunning: 0
