@@ -190,6 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 72576691}
   - component: {fileID: 72576692}
+  - component: {fileID: 72576693}
   m_Layer: 0
   m_Name: bg_snow_2
   m_TagString: Untagged
@@ -205,12 +206,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72576690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.0557404, y: -0.6315185, z: -1.4605736}
+  m_LocalPosition: {x: 5.0557404, y: -0.63151836, z: -1.4605736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195977361}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &72576692
 SpriteRenderer:
@@ -264,6 +265,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &72576693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72576690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ffff3e628e87d49aa44502af7c3066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxEffectMultiplier: {x: 0.3, y: 0.1}
+  cam: {fileID: 1730681942}
 --- !u!1 &94286608
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 94286609}
   - component: {fileID: 94286610}
+  - component: {fileID: 94286611}
   m_Layer: 0
   m_Name: bg_snow_4
   m_TagString: Untagged
@@ -289,12 +305,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94286608}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.0557404, y: -0.6315185, z: -1.4605736}
+  m_LocalPosition: {x: 5.0557404, y: -0.63151836, z: -1.4605736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195977361}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &94286610
 SpriteRenderer:
@@ -348,6 +364,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &94286611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94286608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ffff3e628e87d49aa44502af7c3066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxEffectMultiplier: {x: 0.8, y: 0.5}
+  cam: {fileID: 1730681942}
 --- !u!1 &193791323
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 193791324}
   - component: {fileID: 193791325}
+  - component: {fileID: 193791326}
   m_Layer: 0
   m_Name: bg_snow_3
   m_TagString: Untagged
@@ -373,7 +404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193791323}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.0557404, y: -0.6315185, z: -1.4605736}
+  m_LocalPosition: {x: 5.0557404, y: -0.63151836, z: -1.4605736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -432,6 +463,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &193791326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193791323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ffff3e628e87d49aa44502af7c3066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxEffectMultiplier: {x: 0.5, y: 0.4}
+  cam: {fileID: 1730681942}
 --- !u!1 &276787552
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 276787553}
   - component: {fileID: 276787554}
+  - component: {fileID: 276787555}
   m_Layer: 0
   m_Name: bg_snow_1
   m_TagString: Untagged
@@ -462,7 +508,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195977361}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &276787554
 SpriteRenderer:
@@ -516,6 +562,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &276787555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276787552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ffff3e628e87d49aa44502af7c3066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxEffectMultiplier: {x: 0.1, y: 0.025}
+  cam: {fileID: 1730681942}
 --- !u!1 &306155687
 GameObject:
   m_ObjectHideFlags: 0
@@ -47043,15 +47103,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195977360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.11, y: 3.62, z: 1.19}
+  m_LocalPosition: {x: -22.8, y: 3.52, z: 1.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1853961907}
-  - {fileID: 94286609}
-  - {fileID: 193791324}
-  - {fileID: 72576691}
   - {fileID: 276787553}
+  - {fileID: 72576691}
+  - {fileID: 193791324}
+  - {fileID: 94286609}
+  - {fileID: 1853961907}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47223,6 +47283,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1730681942 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1730681942, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
+  m_PrefabInstance: {fileID: 6585492233148209918}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1730770893
 GameObject:
   m_ObjectHideFlags: 0
@@ -47843,6 +47908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1853961907}
   - component: {fileID: 1853961908}
+  - component: {fileID: 1853961909}
   m_Layer: 0
   m_Name: bg_snow_5
   m_TagString: Untagged
@@ -47858,12 +47924,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853961906}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.0557404, y: -0.6315185, z: -1.4605736}
+  m_LocalPosition: {x: 5.0557404, y: -0.63151836, z: -1.4605736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195977361}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1853961908
 SpriteRenderer:
@@ -47917,6 +47983,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1853961909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853961906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ffff3e628e87d49aa44502af7c3066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxEffectMultiplier: {x: 1, y: 1}
+  cam: {fileID: 1730681942}
 --- !u!1 &2121155771
 GameObject:
   m_ObjectHideFlags: 0
@@ -48041,6 +48121,10 @@ PrefabInstance:
     - target: {fileID: 6585492231486923281, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
       propertyPath: m_Name
       value: Cameras
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585492232259734627, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
+      propertyPath: orthographic size
+      value: 2.35
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5907511413540313302, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
