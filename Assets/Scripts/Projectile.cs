@@ -6,11 +6,13 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] float arrowSpeed = 7f;
     Rigidbody2D arrowRigidBody;
+    CapsuleCollider2D myCapsuleCollider;
     float xSpeed;
 
     PlayerMovement player;
     void Start()
     {
+        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
         arrowRigidBody = GetComponent<Rigidbody2D>();
         player = FindObjectOfType<PlayerMovement>();
         xSpeed = player.transform.localScale.x * arrowSpeed;
@@ -38,8 +40,25 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if(other.tag == "Enemy")
         {
+            Debug.Log("Connected with Enemy");
             Destroy(gameObject);
         }
+        else if (myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        {
+            StartCoroutine(ArrowDestroyWithDelay());
+        }
         
+    }
+
+    IEnumerator ArrowDestroyWithDelay()
+    {
+        Debug.Log("Connected with Ground");
+        int LayerGround = LayerMask.NameToLayer("Ground");
+        gameObject.layer = LayerGround;
+        myCapsuleCollider.isTrigger = false;
+        arrowRigidBody.velocity = new Vector2(0f, 0f);
+        arrowRigidBody.bodyType = RigidbodyType2D.Static;
+        yield return new WaitForSeconds(5f);
+        Destroy(gameObject);       
     }
 }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Death Camera Profile 1
+  m_Name: Death Camera Profile
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 8517007150924655186}
---- !u!114 &8517007150924655186
+  - {fileID: 7627840548602026017}
+--- !u!114 &7627840548602026017
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}

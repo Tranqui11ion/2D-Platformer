@@ -16,7 +16,7 @@ public class BowControls : MonoBehaviour
 
     Animator myAnimator;
 
-    public float bowAttackAnimTime = .75f;
+    public float bowAttackAnimTime = .583f;
     [SerializeField] public RuntimeAnimatorController bowController;
 
 

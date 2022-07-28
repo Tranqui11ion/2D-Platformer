@@ -109,13 +109,21 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator ArrowDelay()
     {
-        yield return new WaitForSeconds(.7f);
+        yield return new WaitForSeconds(.55f);
         ReleaseArrow();
     }
 
     void OnAttack(InputValue value)
     {
         if(!isAlive) { return;}
+        if(lastAttack > 0) { return; }
+        
+
+        if (myFeetCollider.IsTouchingLayers(whatIsGround))
+        {
+            Vector2 playerVelocity = new Vector2(0f, 0f);
+            myRigidbody.velocity = playerVelocity;
+        }
         if (currentWeapon == bowName)
         {
             currentController = bowController;
@@ -196,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
     void Run()
     {
         if (!isAlive) { return; }
+        if (lastAttack > 0) { return; }
         if (moveInput.x != 0)
         {
             CheckDirectionToFace(moveInput.x < 0);

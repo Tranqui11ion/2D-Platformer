@@ -103,14 +103,6 @@ public class SkeletonMovement : MonoBehaviour
             StartCoroutine(Die());    
         }
     }
-
-    // void OnTriggerExit2D(Collider2D other) {
-    //     if (myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Player"))) 
-    //     {
-    //        StartCoroutine(Delay()); 
-    //     }       
-    // }
-
     
     void AttackPlayer()
     {   
@@ -177,34 +169,42 @@ public class SkeletonMovement : MonoBehaviour
 	}
 
     public IEnumerator Die()
-    {    
-        if (gameObject != null)
+    {     
+        if (gameObject != null && isAlive)
         {
             isAlive = false;
             myRigidbody.velocity = new Vector2 (0f, 0f);
             myBoxCollider.enabled = false;
             attackRangeCollider.enabled = false;
             myAnimator.SetTrigger("Dying");
-            yield return new WaitForSeconds(3f);
-            StartCoroutine(FadeOut());
+            yield return new WaitForSeconds(1.5f);
+            yield return StartCoroutine(FadeOut());
             Destroy(gameObject);
         }    
         
     }
 
+    [SerializeField] Color deathColor;
+    //Split into another script later
     IEnumerator FadeOut()
      {
-         float alphaVal = mySpriteRenderer.color.a;
-         Color tmp = mySpriteRenderer.color;
- 
-         while (mySpriteRenderer.color.a < 1)
-         {
-             alphaVal += 0.01f;
-             tmp.a = alphaVal;
-             mySpriteRenderer.color = tmp;
- 
-             yield return new WaitForSeconds(0.05f); // update interval
-         }
-     }
+        Color color = mySpriteRenderer.material.color;
+        
+        float alphaVal = mySpriteRenderer.material.color.a;
+    
+        while (mySpriteRenderer.material.color.a > 0)
+        {
+            if (color.b > .25)
+            {
+                color.b -= .05f;
+                color.g -= .05f;
+            }    
+            alphaVal -= 0.01f;
+            color.a = alphaVal;
+            mySpriteRenderer.material.color = color;
+
+            yield return new WaitForSeconds(0.01f); // update interval
+        }
+    }
     
 }
