@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Parallax : MonoBehaviour
 {
+    [SerializeReference] Vector2 parallaxEffectMultiplier;
     private float length, startpos;
     public GameObject cam;
-    public float parallaxEffect;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +20,8 @@ public class Parallax : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float temp = (cam.transform.position.x * (1 - parallaxEffect));
-        float dist = (cam.transform.position.x * parallaxEffect);
+        float temp = (cam.transform.position.x * (1 - parallaxEffectMultiplier.x), cam.transform.position.y * (1 - parallaxEffectMultiplier.y));
+        float dist = (cam.transform.position.x * parallaxEffectMultiplier);
 
         transform.position = new Vector3(startpos + dist, transform.position.y, transform.position.z);
 
