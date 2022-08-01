@@ -23,9 +23,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool isAlive = true;
     [SerializeField] public bool IsFacingRight;
     [SerializeField] public bool isJumping;
-    [SerializeField] public bool isClimbing;
+    [SerializeField] public bool isClimbing = false;
     [SerializeField] public bool isOnSlope;
     [SerializeField] public bool isGrounded;
+    [SerializeField] public bool canClimb;
 
 
     public float timeSinceJumped = 0;
@@ -90,30 +91,25 @@ public class PlayerMovement : MonoBehaviour
         currentController = unarmedController;
         currentWeapon = unarmedName;
     }
-    // public CapsuleCollider2D GetPlayerCollider()
-    // {
-    //     return myBodyCollider;
-    // }
 
     void Update()
     {        
-        timeSinceJumped -= Time.deltaTime;
-
         if (!isAlive) { return; }
         if (lastAttack >= 0)
         {
             lastAttack -= Time.deltaTime;
         }
-        else
-        {
+        else{
             myAnimator.SetBool(hashAttacking, false);
+            SetGravity();
+            LadderCheck(); 
+            GroundCheck();
             Run();
             CheckForHazards();
             SetJumpOrFall();
-            SetGravity();
-            LadderCheck();
-            GroundCheck();
+            if (isClimbing){ ClimbLadder();}           
         }
+        
     }
 
     IEnumerator ArrowDelay()
@@ -152,11 +148,13 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    
-
-    public void SetGravity()
+    void SetGravity()
     {
-        if ((myFeetCollider.IsTouchingLayers(whatIsSlope) || (myFeetCollider.IsTouchingLayers(whatIsLadder)) && isClimbing))
+        if (myFeetCollider.IsTouchingLayers(whatIsSlope))
+        {
+            myRigidbody.gravityScale = 0f;
+        }
+        else if (isClimbing)
         {
             myRigidbody.gravityScale = 0f;
         }
@@ -170,6 +168,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Instantiate(arrow, bow.position, transform.rotation);
     }
+    
     void OnSwitchWeapons()
     {
         if (currentWeapon == unarmedName)
@@ -192,7 +191,6 @@ public class PlayerMovement : MonoBehaviour
         if (!isAlive) { return; }
         moveInput = value.Get<Vector2>();
     }
-
 
     void FlipSprite()
     {
@@ -236,11 +234,15 @@ public class PlayerMovement : MonoBehaviour
         }
         Vector2 playerVelocity = new Vector2(moveInput.x * runSpeed, myRigidbody.velocity.y);
         myRigidbody.velocity = playerVelocity;
+        bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
 
         if (myFeetCollider.IsTouchingLayers(whatIsGround) || myFeetCollider.IsTouchingLayers(whatIsSlope) )
-        {
-            bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
+        {    
             myAnimator.SetBool(hashRunning, playerHasHorizontalSpeed);
+        }
+        else
+        {
+            myAnimator.SetBool(hashRunning, false);
         }
 
 
@@ -248,13 +250,15 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-
     void OnJump(InputValue value)
     {
+        Debug.Log("Is Jumping");
         if (!isAlive) { return; }
+        if (lastAttack > 0) { return; }
         if (!isGrounded) { return; }
         if (value.isPressed)
         {
+            myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, 0f);
             myRigidbody.velocity += new Vector2(0f, jumpSpeed);
         }
     }
@@ -281,44 +285,45 @@ public class PlayerMovement : MonoBehaviour
 
     void OnClimb(InputValue value)
     {
-        if (myFeetCollider.IsTouchingLayers(whatIsLadder))
+        if (canClimb)
         {
             SetClimbing(true);
-            ClimbLadder();
         }
     }
 
     void SetClimbing(bool val)
     {
         isClimbing = val;
+        Debug.Log("Set isCLimbing to " + val);
         if (!isClimbing)
         {
             myAnimator.SetBool(hashClimbing, false);
             myAnimator.speed = 1;
             runSpeed = runSpeedAtStart;
-            return;
         }
 
     }
 
     void LadderCheck()
     {
-        if (isClimbing && myFeetCollider.IsTouchingLayers(whatIsLadder) && !myFeetCollider.IsTouchingLayers(whatIsGround))
+        Debug.Log("Checking for Ladder");
+        if (myFeetCollider.IsTouchingLayers(whatIsLadder))
         {
-            ClimbLadder();
+            canClimb = true;
         }
         else
         {
-            SetClimbing(false);
+            canClimb = false;
+            SetClimbing(false); 
         }
+
     }
 
     void ClimbLadder()
     {
-        
+        Debug.Log("Climbing Ladder");
         Vector2 climbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y * climbSpeed);
         myRigidbody.velocity = climbVelocity;
-        SetGravity();
         bool playerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon;
         if (playerHasVerticalSpeed)
         {
@@ -326,12 +331,11 @@ public class PlayerMovement : MonoBehaviour
             runSpeed = runSpeedAtStart / 3;
             myAnimator.speed = 1;
         }
-        else if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        else
         {
             myAnimator.SetBool(hashClimbing, true);
-            runSpeed = runSpeedAtStart / 4;
+            runSpeed = runSpeedAtStart / 2;
             myAnimator.speed = 0;
-            SetClimbing(false);
         }
     }
 

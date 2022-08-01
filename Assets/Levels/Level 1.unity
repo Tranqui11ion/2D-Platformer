@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1645057391, guid: 52af43ffd75e7749e9dafc6c2610c655, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 5935475864612145896, guid: 52af43ffd75e7749e9dafc6c2610c655, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1141,7 +1145,7 @@ CompositeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -83700,11 +83704,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6585492232259734624, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.591105
+      value: -16.591106
       objectReference: {fileID: 0}
     - target: {fileID: 6585492232259734624, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7230134
+      value: 3.722189
       objectReference: {fileID: 0}
     - target: {fileID: 6585492232259734627, guid: 33f5509a8df796d4e902865ebd681533, type: 3}
       propertyPath: orthographic size
