@@ -20,16 +20,16 @@ public class Parallax : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float temp = (cam.transform.position.x * (1 - parallaxEffectMultiplier.x), cam.transform.position.y * (1 - parallaxEffectMultiplier.y));
-        float dist = (cam.transform.position.x * parallaxEffectMultiplier);
+        Vector3 temp = new Vector3(cam.transform.position.x * (1 - parallaxEffectMultiplier.x), cam.transform.position.y * (1 - parallaxEffectMultiplier.y));
+        Vector3 dist = new Vector3(cam.transform.position.x * parallaxEffectMultiplier.x, cam.transform.position.y * parallaxEffectMultiplier.y);
 
-        transform.position = new Vector3(startpos + dist, transform.position.y, transform.position.z);
+        transform.position = new Vector3(startpos + dist.x, dist.y, transform.position.z);
 
-        if (temp > startpos + length)
+        if (temp.x > startpos + length)
         {
             startpos += length;
         }
-        else if (temp < startpos - length)
+        else if (temp.x < startpos - length)
         {
             startpos -= length;
         }
