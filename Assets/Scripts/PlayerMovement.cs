@@ -222,6 +222,7 @@ public class PlayerMovement : MonoBehaviour
             Die();
         }
     }
+    
     void Run()
     {
         if (!isAlive) { return; }
@@ -262,7 +263,6 @@ public class PlayerMovement : MonoBehaviour
             myRigidbody.velocity += new Vector2(0f, jumpSpeed);
         }
     }
-
 
     void SetJumpOrFall()
     {
