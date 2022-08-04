@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - Ground
   - Slope
+  - Platform
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Hazards
   - Projectiles
   - Slope
-  - 
+  - Platform
   - 
   - 
   - 

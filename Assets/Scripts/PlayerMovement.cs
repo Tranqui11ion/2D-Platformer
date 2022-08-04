@@ -7,6 +7,7 @@ using Cinemachine;
 public class PlayerMovement : MonoBehaviour
 {
 
+
     public readonly int hashIdle = Animator.StringToHash("isIdling");
     public readonly int hashAttacking = Animator.StringToHash("isAttacking");
     public readonly int hashRunning = Animator.StringToHash("isRunning");
@@ -27,6 +28,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public bool isOnSlope;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canClimb;
+    [SerializeField] public bool canDrop;
+
+    private GameObject platform;
 
 
     public float timeSinceJumped = 0;
@@ -51,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask whatIsGround;
     [SerializeField] LayerMask whatIsSlope;
     [SerializeField] LayerMask whatIsLadder;
+    [SerializeField] LayerMask whatIsPlatform;
 
     [SerializeField] PhysicsMaterial2D withFriction;
     [SerializeField] PhysicsMaterial2D noFriction;
@@ -80,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         whatIsGround = LayerMask.GetMask("Ground");
         whatIsSlope = LayerMask.GetMask("Slope");
         whatIsLadder = LayerMask.GetMask("Climbing");
+        whatIsPlatform = LayerMask.GetMask("Platform");
         _myImpulseSource = GetComponent<CinemachineImpulseSource>();
 
     }
@@ -112,11 +118,40 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    void OnTriggerEnter2D(Collider2D other) {
+        Debug.Log("Triggered!!");
+        if (other.tag == "Platform")   
+        {
+            canDrop = true;
+            platform = other.gameObject;
+        } 
+    }
+
+    void OnTriggerExit2D(Collider2D other) {
+        Debug.Log("Un....Triggered!!");
+        if (other.tag == "Platform")   
+        {
+            canDrop = false;
+        } 
+    }
+
+    void OnDropDown()
+    {
+        if (canClimb) {return;}
+        if (canDrop)
+        {
+            VerticalPlatform platformController = platform.GetComponent<VerticalPlatform>();
+            StartCoroutine(platformController.DelayAndFlipOffset());
+        }    
+    }
+    
     IEnumerator ArrowDelay()
     {
         yield return new WaitForSeconds(.55f);
         ReleaseArrow();
     }
+
+    
 
     void OnAttack(InputValue value)
     {
@@ -124,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
         if (lastAttack > 0) { return; }
 
 
-        if (myFeetCollider.IsTouchingLayers(whatIsGround))
+        if (myFeetCollider.IsTouchingLayers(whatIsGround) || myFeetCollider.IsTouchingLayers(whatIsSlope))
         {
             Vector2 playerVelocity = new Vector2(0f, 0f);
             myRigidbody.velocity = playerVelocity;
@@ -272,7 +307,10 @@ public class PlayerMovement : MonoBehaviour
         {
             myAnimator.SetBool(hashJumping, verticalSpeed > 0);
             myAnimator.SetBool(hashFalling, verticalSpeed < 0);
-            runSpeed = runSpeed / 2;
+            if (myAnimator.GetBool(hashFalling))
+            {
+                runSpeed = runSpeedAtStart / 1.2f;
+            }    
         }
         else
         {
@@ -283,16 +321,31 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void OnClimb(InputValue value)
+    void OnClimbPressed(InputValue value)
     {
         if (canClimb)
         {
             SetClimbing(true);
+            if (canDrop)
+            {       
+                VerticalPlatform platformController = platform.GetComponent<VerticalPlatform>();
+                platformController.FlipOffset();
+            }
         }
+        
+    }
+
+    void OnClimbReleased(InputValue value)
+    {
+        if (isGrounded)
+        {
+            SetClimbing(false);
+        }    
     }
 
     void SetClimbing(bool val)
     {
+        if(isClimbing == val) { return; }
         isClimbing = val;
         Debug.Log("Set isCLimbing to " + val);
         if (!isClimbing)
@@ -306,7 +359,6 @@ public class PlayerMovement : MonoBehaviour
 
     void LadderCheck()
     {
-        Debug.Log("Checking for Ladder");
         if (myFeetCollider.IsTouchingLayers(whatIsLadder))
         {
             canClimb = true;
@@ -321,10 +373,10 @@ public class PlayerMovement : MonoBehaviour
 
     void ClimbLadder()
     {
-        Debug.Log("Climbing Ladder");
+        bool playerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon;
         Vector2 climbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y * climbSpeed);
         myRigidbody.velocity = climbVelocity;
-        bool playerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon;
+        
         if (playerHasVerticalSpeed)
         {
             myAnimator.SetBool(hashClimbing, true);
@@ -361,6 +413,12 @@ private void GroundCheck()
         else
         {
             isGrounded = false;
+        }
+
+        if (lastAttack > 0 && isGrounded)
+        {
+            Vector2 playerVelocity = new Vector2(0f, 0f);
+            myRigidbody.velocity = playerVelocity;
         }
     }
 

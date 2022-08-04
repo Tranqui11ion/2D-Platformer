@@ -14,6 +14,19 @@ public class VerticalPlatform : MonoBehaviour
         effector = GetComponent<PlatformEffector2D>();
     }
 
+    public void FlipOffset()
+    {
+        effector.rotationalOffset = 180f;
+        isFlipped = true;
+        flipTime = .5f;
+    }
+
+    public IEnumerator DelayAndFlipOffset()
+    {
+        yield return new WaitForSeconds(.5f);
+        FlipOffset();
+    }
+
     void Update() 
     {
         flipTime -= Time.deltaTime;
@@ -24,28 +37,7 @@ public class VerticalPlatform : MonoBehaviour
                 isFlipped = false;
                 effector.rotationalOffset = 0f;
             }
-            else 
-            { 
-                return; 
-            }
-        }
-        if(Input.GetKeyUp(KeyCode.DownArrow) ||Input.GetKeyUp(KeyCode.W) ) 
-        {
-            waitTime = 0.5f;
-        }
-        if(Input.GetKey(KeyCode.DownArrow) ||Input.GetKey(KeyCode.W) )    
-        {
-            if(waitTime <= 0)
-            {
-                effector.rotationalOffset = 180f;
-                waitTime = 0.5f;
-                isFlipped = true;
-                flipTime = 1f;
-            }
-            else
-            {
-                waitTime -= Time.deltaTime;
-            }
+            
         }
     }
 }

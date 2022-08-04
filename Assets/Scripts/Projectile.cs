@@ -9,9 +9,15 @@ public class Projectile : MonoBehaviour
     CapsuleCollider2D myCapsuleCollider;
     float xSpeed;
 
+    [SerializeField] LayerMask whatIsGround;
+    [SerializeField] LayerMask whatIsSlope;
+
     PlayerMovement player;
     void Start()
     {
+        whatIsGround = LayerMask.GetMask("Ground");
+        whatIsSlope = LayerMask.GetMask("Slope");
+
         myCapsuleCollider = GetComponent<CapsuleCollider2D>();
         arrowRigidBody = GetComponent<Rigidbody2D>();
         player = FindObjectOfType<PlayerMovement>();
@@ -43,7 +49,7 @@ public class Projectile : MonoBehaviour
             Debug.Log("Connected with Enemy");
             Destroy(gameObject);
         }
-        else if (myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        else if (myCapsuleCollider.IsTouchingLayers(whatIsGround) || myCapsuleCollider.IsTouchingLayers(whatIsSlope)) 
         {
             StartCoroutine(ArrowDestroyWithDelay());
         }
