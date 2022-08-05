@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public class Slime : MonoBehaviour
 {
     [SerializeField] float moveTimer;
+    [SerializeField] float idleTimer;
     [SerializeField] bool justKilled = false;
     [SerializeField] bool isAlive = true;
     [SerializeField] bool isRunning = false;
+    [SerializeField] bool isIdle = false;
 
     [SerializeField] public bool IsFacingRight = true;
     [SerializeField] float moveSpeed = .5f;
     float startingMoveSpeed = .5f;
+
+    float runAnimationLength = 1.0f;
+    float idleAnimationLength = .917f;
 
 
     SpriteRenderer mySpriteRenderer;
@@ -54,41 +61,68 @@ public class Slime : MonoBehaviour
     {
         
         if (!isAlive) { return; }
-        lastAttack += Time.deltaTime;
-        moveTimer -= Time.deltaTime;
+        
+        lastAttack += Time.deltaTime;        
         if (lastAttack > 3f){ AttackPlayer(); }
         
-        Move();
+        idleTimer -= Time.deltaTime;
+        CheckIfIdle();
+        if (!isIdle) { Move(); }
+    }
+
+    
+
+    void CheckIfIdle()
+    {
+        if (idleTimer <= 0)
+        {
+            isIdle = false;
+        }
+        else
+        {
+            isIdle = true;
+        }
     }
 
     void SetMoveTimer()
-    {
-        moveTimer = Random.Range(1.0f, 3.0f);
-    }
+    {   
+        moveTimer = (float)Random.Range(4, 12) * runAnimationLength; //move animation is 1.0 sec so integer works well
 
-    IEnumerator Delay(float val)
-    {
-        yield return new WaitForSeconds(val);
     }
 
     void Move()
     {
+        
         if (moveTimer < 0)
         {
-            Delay(1.5f);
+            myAnimator.SetBool("isRunning", false);
+            myRigidbody.velocity = new Vector2(0f, 0f);
             SetMoveTimer();
-            FlipSprite();
+
+            int flip = Random.Range(1,3); // Make direction change random
+            Debug.Log("Setting flip: " + flip );
+            if (flip == 1)
+            {
+                Debug.Log("Flipped");
+                moveSpeed = -moveSpeed;
+            }
+
+            int idleMultiplier = Random.Range(3, 8);
+            idleTimer =  idleAnimationLength * idleMultiplier;     //.917 is animation length         
         }
         else
         {
+            moveTimer -= Time.deltaTime;
             myAnimator.SetBool("isRunning", true);
             myRigidbody.velocity = new Vector2(moveSpeed, 0f);
             CheckDirectionToFace(myRigidbody.velocity.x > 0);
+            
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Triggered");
         if (other.tag == "Projectile")
         {
             StartCoroutine(Die());
@@ -97,10 +131,25 @@ public class Slime : MonoBehaviour
         {
             AttackPlayer();
         }
-        else if (other.tag == "Ground" || other.tag == "Slope")
+        // else if (other.tag == "Slope")
+        // {
+        //     Debug.Log("Changing direction");
+        //     Debug.Log("moveSpeed " + moveSpeed );
+        //     moveSpeed = -moveSpeed;
+        //     Debug.Log("moveSpeed " + moveSpeed );
+        // }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if (other.tag == "Ground")
         {
+            Debug.Log("Changing direction");
+            Debug.Log("moveSpeed " + moveSpeed );
             moveSpeed = -moveSpeed;
+            Debug.Log("moveSpeed " + moveSpeed );
         }
+        
     }
 
     void AttackPlayer()

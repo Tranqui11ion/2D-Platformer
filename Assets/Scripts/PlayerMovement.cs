@@ -21,6 +21,10 @@ public class PlayerMovement : MonoBehaviour
     string swordName = "sword";
     string unarmedName = "hand";
 
+    [SerializeField] public bool hasSword = true;
+    [SerializeField] public bool hasBow = true;
+
+
     [SerializeField] bool isAlive = true;
     [SerializeField] public bool IsFacingRight;
     [SerializeField] public bool isJumping;
@@ -71,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public RuntimeAnimatorController currentController;
     [SerializeField] public RuntimeAnimatorController unarmedController;
     [SerializeField] public RuntimeAnimatorController bowController;
+    [SerializeField] public RuntimeAnimatorController swordController;
 
     [SerializeField] float jumpTime = 0f;
 
@@ -119,7 +124,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("Triggered!!");
         if (other.tag == "Platform")   
         {
             canDrop = true;
@@ -128,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnTriggerExit2D(Collider2D other) {
-        Debug.Log("Un....Triggered!!");
+        
         if (other.tag == "Platform")   
         {
             canDrop = false;
@@ -174,7 +178,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (currentWeapon == swordName)
         {
-            swordControls.Attack();
+            currentController = bowController;
+            //swordControls.Attack();
+            myAnimator.SetBool(hashAttacking, true);
+            lastAttack = bowControls.bowAttackAnimTime;
         }
         else
         {
@@ -206,16 +213,17 @@ public class PlayerMovement : MonoBehaviour
     
     void OnSwitchWeapons()
     {
-        if (currentWeapon == unarmedName)
+
+        if (currentWeapon != swordName && hasSword)
+        {
+            currentWeapon = swordName;
+            currentController = swordController;
+            myAnimator.runtimeAnimatorController = currentController as RuntimeAnimatorController;
+        }
+        else if (currentWeapon != bowName && hasBow)
         {
             currentWeapon = bowName;
             currentController = bowController;
-            myAnimator.runtimeAnimatorController = currentController as RuntimeAnimatorController;
-        }
-        else
-        {
-            currentWeapon = unarmedName;
-            currentController = unarmedController;
             myAnimator.runtimeAnimatorController = currentController as RuntimeAnimatorController;
         }
 
