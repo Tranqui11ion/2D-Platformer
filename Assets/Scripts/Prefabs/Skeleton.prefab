@@ -130,7 +130,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 6
 --- !u!70 &8813165144727588481
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -141,11 +141,11 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.028611422, y: 0}
-  m_Size: {x: 0.38891554, y: 0.6035013}
+  m_Offset: {x: -0.028611422, y: 0.0113271475}
+  m_Size: {x: 0.38891554, y: 0.580847}
   m_Direction: 0
 --- !u!114 &2886360117722937732
 MonoBehaviour:
@@ -161,14 +161,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveTimer: 0
   idleTimer: 0
+  lastChase: 0
   justKilled: 0
   isAlive: 1
   isAttacking: 0
   isRunning: 0
   isIdle: 0
+  isFollowingPlayer: 0
+  agroRange: 2.5
   attackRight: 0
   IsFacingRight: 1
   moveSpeed: 0.75
+  chaseSpeed: 1.2
+  lastAttackDelay: 2
   player: {fileID: 0}
   lastAttack: 0
   attackTimer: 1.4
@@ -213,6 +218,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.020009995, y: 0}
+  m_Offset: {x: 0.26900482, y: 0}
   serializedVersion: 2
-  m_Radius: 0.47436333
+  m_Radius: 0.18534851
