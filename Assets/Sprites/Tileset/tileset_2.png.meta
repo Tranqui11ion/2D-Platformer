@@ -400,7 +400,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -128, y: -128}
+        - {x: -128, y: 13}
+        - {x: 128, y: 13}
+        - {x: 128, y: -128}
       tessellationDetail: 0
       bones: []
       spriteID: 2e8c57f9e017e2840800000000000000
@@ -421,7 +425,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -128, y: -128}
+        - {x: -128, y: 1}
+        - {x: 128, y: 1}
+        - {x: 128, y: -128}
       tessellationDetail: 0
       bones: []
       spriteID: b9dd32de8e2634e50800000000000000
@@ -442,7 +450,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -128, y: -128}
+        - {x: -128, y: 1}
+        - {x: 128, y: 5}
+        - {x: 128, y: -128}
       tessellationDetail: 0
       bones: []
       spriteID: e82e1eee15e4b68d0800000000000000
@@ -2007,15 +2019,15 @@ TextureImporter:
       tileset_2_72: -2884552666205151123
       tileset_2_48: 6475270460763819678
       tileset_2_44: -4876948718602895433
-      tileset_2_14: 4094421522030285838
-      tileset_2_20: -4408082426781722240
-      tileset_2_66: 7727573186695362254
-      tileset_2_5: 30557399910530418
-      tileset_2_12: -815689794397191194
-      tileset_2_37: 2478671355143818144
       tileset_2_26: -1596923510250898573
       tileset_2_15: -8302228234173314100
+      tileset_2_5: 30557399910530418
+      tileset_2_20: -4408082426781722240
+      tileset_2_12: -815689794397191194
+      tileset_2_14: 4094421522030285838
+      tileset_2_37: 2478671355143818144
       tileset_2_38: -1015355044960527848
+      tileset_2_66: 7727573186695362254
       tileset_2_61: -2112650881767436950
       tileset_2_52: -2249429333850141288
       tileset_2_50: 1274463042283041455

@@ -27,7 +27,7 @@ TagManager:
   - Projectiles
   - Slope
   - Platform
-  - 
+  - Interactable
   - 
   - 
   - 
@@ -58,9 +58,15 @@ TagManager:
   - name: Props
     uniqueID: 864781379
     locked: 0
-  - name: Player
-    uniqueID: 4284310149
+  - name: Interactables
+    uniqueID: 3036454849
+    locked: 0
+  - name: Enemies
+    uniqueID: 923527525
     locked: 0
   - name: Projectiles
     uniqueID: 1136096085
+    locked: 0
+  - name: Player
+    uniqueID: 4284310149
     locked: 0
